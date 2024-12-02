@@ -47,3 +47,24 @@ Based on the insights derived from the analysis, the following recommendations a
 - Operational Efficiency: Continuously monitor and improve operational efficiency to ensure timely order fulfillment and enhance customer satisfaction.
 - Data-Driven Decision-Making: Leverage data insights for continuous improvement and strategic planning.
 By implementing these recommendations, the e-commerce business can enhance customer satisfaction, optimize operations, and drive sustainable growth.
+
+## Setup Environment - Anaconda
+```
+conda create --name main-ds python=3.10
+conda activate main-ds
+pip install -r requirements.txt
+```
+
+## Setup Environment - Shell/Terminal
+```
+mkdir proyek_analisis_data
+cd proyek_analisis_data
+pipenv install
+pipenv shell
+pip install -r requirements.txt
+```
+
+## Run steamlit app
+```
+streamlit run dashboard.py
+```
