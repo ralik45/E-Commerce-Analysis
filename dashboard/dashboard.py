@@ -8,9 +8,9 @@ st.title("E-Commerce Data Analysis Dashboard")
 st.write("Explore insights from the e-commerce dataset.")
 
 # Corrected file paths
-orders_items_payments_path = "C:/Users/HP Elitebook 830 G5/Desktop/Barra/Projects/E-Commerce-Analysis/dashboard/orders_items_payments.csv"
-orders_path = "C:/Users/HP Elitebook 830 G5/Desktop/Barra/Projects/E-Commerce-Analysis/dashboard/rfm_df.csv"
-order_reviews_path = "C:/Users/HP Elitebook 830 G5/Desktop/Barra/Projects/E-Commerce-Analysis/dashboard/order_delivery_satisfaction_df.csv"
+orders_items_payments_path = "https://raw.githubusercontent.com/ralik45/E-Commerce-Analysis/refs/heads/main/dashboard/orders_items_payments.csv"
+orders_path = "https://raw.githubusercontent.com/ralik45/E-Commerce-Analysis/refs/heads/main/dashboard/rfm_df.csv"
+order_reviews_path = "https://raw.githubusercontent.com/ralik45/E-Commerce-Analysis/refs/heads/main/dashboard/order_delivery_satisfaction_df.csv"
 
 try:
     # Read datasets
