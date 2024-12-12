@@ -2,7 +2,7 @@
 ## Project Background
 This project aims to analyze an e-commerce public dataset to extract valuable insights into customer behavior, sales trends, and overall business performance. By applying data analysis techniques, we seek to address specific business questions to provide recommendations for optimization and growth. This project is a practical application of data science skills to real-world business scenarios, showcasing the power of data-driven decision-making.
 
-## Dataset Attributes
+## Dataset Overview
 The dataset comprises several tables, each containing information about a specific aspect of the e-commerce operations:
 
 - Customers: Data on customers, including their unique IDs, locations, and demographics.
