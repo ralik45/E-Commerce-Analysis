@@ -11,50 +11,111 @@ st.write("Explore insights from the e-commerce dataset.")
 orders_items_payments_path = "https://raw.githubusercontent.com/ralik45/E-Commerce-Analysis/refs/heads/main/dashboard/orders_items_payments.csv"
 orders_path = "https://raw.githubusercontent.com/ralik45/E-Commerce-Analysis/refs/heads/main/dashboard/rfm_df.csv"
 order_reviews_path = "https://raw.githubusercontent.com/ralik45/E-Commerce-Analysis/refs/heads/main/dashboard/order_delivery_satisfaction_df.csv"
+avg_popularity_products_path = "https://raw.githubusercontent.com/ralik45/E-Commerce-Analysis/refs/heads/main/dashboard/avg_popularity_product.csv"
 
 try:
     # Read datasets
     orders_items_payments = pd.read_csv(orders_items_payments_path)
     orders_df = pd.read_csv(orders_path)
     order_reviews_df = pd.read_csv(order_reviews_path)
-    
-    # Monthly Sales Analysis
-    st.subheader("Monthly Sales Analysis")
-    monthly_sales = orders_items_payments.groupby('order_month')['payment_value'].sum()
-    st.line_chart(monthly_sales)
+    avg_popularity_products = pd.read_csv(avg_popularity_products_path)
 
-    # Monthly Orders
-    st.subheader("Monthly Orders Analysis")
-    monthly_orders = orders_items_payments.groupby('order_month')['order_id'].count()
-    st.line_chart(monthly_orders)
-    
-    # Monthly Customers
-    st.subheader("Monthly Customers Analysis")
-    monthly_customers = orders_items_payments.groupby('order_month')['customer_id'].count()
-    st.line_chart(monthly_customers)
-    
-    st.markdown("### Total Sales, Orders, and Customers")
-    st.markdown("3 Chart ini memberikan pandangan yang jelas mengenai monthly sales, Orders, dan Customers selama ini, menunjukkan growth yang signifikan dari oktober 2016 sampai akhir 2017. Peningkatan di sales, lebih tepatnya pada puncak november 2017, ini mungkin menunjukkan suksesnya strategi marketing yang mendorong pelanggan untuk beli. Namun, fluktuasi pasca-puncak dan penurunan bertahap pada tahun 2018 menyoroti tantangan potensial, seperti berkurangnya keterlibatan pelanggan, kejenuhan pasar, atau berkurangnya upaya promosi. Hal ini menekankan pentingnya mempertahankan momentum melalui strategi inovatif, kampanye tepat waktu, atau peningkatan produk.")
-    st.markdown("Sebagai kesimpulan, meskipun tren kenaikan secara keseluruhan mencerminkan keberadaan pasar yang kuat dan potensi pertumbuhan, pola penurunan pada tahun 2018 menandakan perlunya tindakan segera untuk mengatasi stagnasi penjualan. Bisnis harus memanfaatkan wawasan dari periode puncak untuk mengidentifikasi apa yang disukai pelanggan sambil mengatasi kesenjangan dalam kinerja. Dengan demikian, mereka dapat membangun ketahanan jangka panjang, memanfaatkan peluang pertumbuhan, dan mempertahankan lintasan penjualan yang stabil.")
+    def sales_dashboard(orders_items_payments):
+        # Ensure order_month is in datetime format
+        orders_items_payments['order_month'] = pd.to_datetime(orders_items_payments['order_month'])
+        
+        # Extract year and month for filtering
+        orders_items_payments['year'] = orders_items_payments['order_month'].dt.year
+        orders_items_payments['month'] = orders_items_payments['order_month'].dt.month_name()
+        
+        # Sidebar filters
+        st.sidebar.header("Sales Dashboard Filters")
+        
+        # Year filter
+        available_years = sorted(orders_items_payments['year'].unique())
+        selected_years = st.sidebar.multiselect(
+            "Select Years", 
+            options=available_years, 
+            default=available_years
+        )
+        
+        # Month filter
+        available_months = sorted(orders_items_payments['month'].unique(), 
+                                key=lambda x: pd.to_datetime(x, format='%B').month)
+        selected_months = st.sidebar.multiselect(
+            "Select Months", 
+            options=available_months, 
+            default=available_months
+        )
+        
+        # Filter the dataframe
+        filtered_df = orders_items_payments[
+            (orders_items_payments['year'].isin(selected_years)) & 
+            (orders_items_payments['month'].isin(selected_months))
+        ]
+        
+        # 1. Monthly Sales Analysis
+        st.subheader("Monthly Sales Analysis")
+        monthly_sales = filtered_df.groupby('order_month')['payment_value'].sum()
+        st.line_chart(monthly_sales)
+        st.markdown("""
+                    Chart ini menunjukkan data penjualan dari Oktober 2016 hingga Agustus 2018, yang mencerminkan tren kenaikan signifikan secara keseluruhan. Titik terendah terjadi pada Desember 2016 dengan nilai 19.62, sementara puncaknya tercapai pada November 2017 dengan nilai 1,548,547.86. Setelah kenaikan tajam dari awal 2017 hingga akhir 2017, tren mengalami sedikit fluktuasi namun tetap berada pada kisaran tinggi hingga pertengahan 2018. Secara keseluruhan, data ini memperlihatkan pola pertumbuhan positif dengan kenaikan drastis pada tahun 2017 dan stabilisasi pada tingkat yang lebih tinggi selama 2018.
+                    """)
+        
+        # 2. Monthly Orders Analysis
+        st.subheader("Monthly Orders Analysis")
+        monthly_orders = filtered_df.groupby('order_month')['order_id'].count()
+        st.line_chart(monthly_orders)
+        st.markdown("Chart ini memperlihatkan jumlah pesanan bulanan dari Oktober 2016 hingga Agustus 2018, menunjukkan pertumbuhan signifikan secara keseluruhan. Titik terendah terjadi pada Desember 2016 dengan 1 pesanan, sementara puncaknya tercapai pada November 2017 dengan 8.812 pesanan. Dari awal 2017, jumlah pesanan meningkat secara konsisten hingga mencapai puncak di akhir tahun, kemudian stabil di kisaran tinggi sepanjang 2018 meskipun sedikit menurun dari puncaknya. Secara keseluruhan, tren pesanan menunjukkan peningkatan yang kuat pada tahun 2017, diikuti oleh stabilisasi pada tingkat yang relatif tinggi di tahun 2018.")
+        
+        # 3. Monthly Customers Analysis
+        st.subheader("Monthly Customers Analysis")
+        monthly_customers = filtered_df.groupby('order_month')['customer_id'].nunique()
+        st.line_chart(monthly_customers)
+        st.markdown("Chart ini memperlihatkan jumlah pelanggan bulanan dari Oktober 2016 hingga Agustus 2018, menunjukkan tren pertumbuhan yang signifikan secara keseluruhan. Jumlah pelanggan terendah tercatat pada Desember 2016 dengan 1 pelanggan, sementara puncaknya terjadi pada November 2017 dengan 7.288 pelanggan. Dari awal 2017, jumlah pelanggan meningkat tajam hingga akhir tahun 2017, diikuti oleh stabilisasi pada tingkat tinggi sepanjang tahun 2018 dengan sedikit penurunan setelah puncaknya. Secara keseluruhan, data ini menunjukkan pertumbuhan pesat selama 2017, yang kemudian berlanjut dengan konsistensi pada tingkat yang tinggi sepanjang 2018.")
+        
+        # 4. Average Sales per Customer
+        st.subheader("Average Spending per Customer")
+        sales_per_customer = (
+            filtered_df.groupby(['order_month', 'customer_id'])['payment_value'].sum().reset_index()
+        )
+        sales_per_customer_per_month = sales_per_customer.groupby('order_month').agg(
+            avg_sales_per_customer=('payment_value', 'mean')
+        )
+        st.line_chart(sales_per_customer_per_month)
+        st.markdown("Chart ini menunjukkan rata-rata penjualan per pelanggan per bulan dari Oktober 2016 hingga Agustus 2018. Rata-rata penjualan tertinggi tercatat pada Oktober 2016 sebesar 233.01, sementara titik terendahnya terjadi pada Desember 2016 dengan 19.62. Setelah fluktuasi awal, rata-rata penjualan per pelanggan stabil pada kisaran 180-240 di tahun-tahun berikutnya, dengan sedikit peningkatan di beberapa bulan seperti September 2017 (240.08) dan Mei 2018 (219.39). Secara keseluruhan, tren menunjukkan penurunan tajam setelah Oktober 2016, diikuti dengan stabilisasi pada tingkat menengah hingga akhir periode.")
+        
+        # Optional: Add some additional insights
+        st.sidebar.header("Dashboard Insights")
+        st.sidebar.metric("Total Sales", f"${monthly_sales.sum():,.2f}")
+        st.sidebar.metric("Total Orders", monthly_orders.sum())
+        st.sidebar.metric("Total Unique Customers", monthly_customers.sum())
 
-    # Average Sales per Customer
-    st.subheader("Average Spending per Customer")
-    sales_per_customer = (
-        orders_items_payments.groupby(['order_month', 'customer_id'])['payment_value'].sum().reset_index()
-    )
-    sales_per_customer_per_month = sales_per_customer.groupby('order_month').agg(
-    avg_sales_per_customer=('payment_value', 'mean')
-    )
-    st.line_chart(sales_per_customer_per_month)
-    
-    st.markdown("### Average Spending per Customer")
-    st.markdown("Grafik di atas menunjukkan rata-rata penjualan per pelanggan per bulan dalam rentang waktu tertentu, dimulai dari Oktober 2016 hingga Agustus 2018. Pada awal periode, terlihat adanya penurunan tajam pada bulan Desember 2016, yang menunjukkan nilai rata-rata penjualan per pelanggan sangat rendah dibandingkan bulan sebelumnya. Penurunan ini dapat disebabkan oleh faktor musiman, gangguan dalam operasi bisnis, atau penurunan permintaan. Setelah titik terendah ini, terdapat peningkatan tajam di bulan Januari 2017, yang mungkin disebabkan oleh pulihnya operasional atau promosi penjualan khusus di awal tahun. Setelah Januari 2017, rata-rata penjualan per pelanggan cenderung stabil dengan fluktuasi kecil hingga pertengahan 2017.")
-    st.markdown("Pada pertengahan hingga akhir periode, sekitar bulan Juli 2017 hingga Agustus 2018, grafik menunjukkan adanya pola fluktuasi yang lebih teratur tetapi tetap berada dalam kisaran yang lebih tinggi dibandingkan awal 2017. Peningkatan rata-rata penjualan per pelanggan di beberapa bulan seperti Juni 2017 hingga September 2017 dapat mencerminkan peluncuran produk baru atau keberhasilan kampanye pemasaran. Namun, tren mulai menurun perlahan setelah puncak tersebut hingga Agustus 2018, menunjukkan perlunya strategi baru untuk menjaga momentum pertumbuhan. Secara keseluruhan, grafik ini memberikan wawasan penting tentang perilaku pelanggan dan efektivitas strategi pemasaran pada periode tersebut, serta mengindikasikan perlunya analisis lebih lanjut terhadap faktor-faktor penyebab penurunan dan peningkatan penjualan pada periode tertentu.")
+    # Assuming you have your dataframe loaded as orders_items_payments
+    sales_dashboard(orders_items_payments)
 
+    # Product Popularity Analysis
+    st.subheader('Average Product Price per Category (Top 10)')
+    fig1, ax1 = plt.subplots(figsize=(10, 6))
+    sns.barplot(x='price', y='product_category_name_english', data=avg_popularity_products.sort_values(by='price', ascending=False).head(10), palette='viridis', ax=ax1)
+    ax1.set_xlabel('Average Price')
+    ax1.set_ylabel('Product Category')
+    ax1.set_title('Average Product Price per Category (Top 10)')
+    st.pyplot(fig1)
+
+    
+    st.subheader('Product Category Popularity (Top 10)')
+    fig2, ax2 = plt.subplots(figsize=(12, 6))
+    sns.barplot(x='product_id', y='product_category_name_english', data=avg_popularity_products.sort_values(by='product_id', ascending=False).head(10), palette='viridis', ax=ax2)
+    ax2.set_xlabel('Number of Products Sold')
+    ax2.set_ylabel('Product Category')
+    ax2.set_title('Product Category Popularity (Top 10)')
+    st.pyplot(fig2)
+    
     # Correlation Analysis
     st.subheader("Correlation: Delivery Time vs Customer Satisfaction")
     if 'delivery_time' in order_reviews_df:
-        plt.figure(figsize=(10, 5))
+        plt.figure(figsize=(10, ))
         sns.scatterplot(data=order_reviews_df, x='delivery_time', y='review_score')
         st.pyplot(plt)
 
