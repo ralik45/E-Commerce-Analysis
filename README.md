@@ -48,6 +48,11 @@ Based on the insights derived from the analysis, the following recommendations a
 - Data-Driven Decision-Making: Leverage data insights for continuous improvement and strategic planning.
 By implementing these recommendations, the e-commerce business can enhance customer satisfaction, optimize operations, and drive sustainable growth.
 
+## Link Dashboard Streamlit
+```
+https://ecommerce-analysis-barra.streamlit.app/
+```
+
 ## Setup Environment - Anaconda
 ```
 conda create --name main-ds python=3.10
