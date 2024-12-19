@@ -1,4 +1,5 @@
 # E-Commerce-Analysis
+
 ## Project Background
 This project aims to analyze an e-commerce public dataset to extract valuable insights into customer behavior, sales trends, and overall business performance. By applying data analysis techniques, we seek to address specific business questions to provide recommendations for optimization and growth. This project is a practical application of data science skills to real-world business scenarios, showcasing the power of data-driven decision-making.
 
@@ -14,7 +15,6 @@ The dataset comprises several tables, each containing information about a specif
 - Product Category: Translation of product category names into English.
 - Products: Information about products, their categories, descriptions, dimensions, and weights.
 - Sellers: Data on sellers, including their IDs, locations, and ratings.
-These datasets are interconnected and provide a holistic view of the e-commerce business.
 
 ## Executive Summary
 This analysis of an e-commerce public dataset reveals key insights into sales trends, customer behavior, and business performance. Sales, orders, and customer acquisition grew significantly from October 2016 to late 2017, likely driven by successful marketing strategies. However, a gradual decline in 2018 suggests potential challenges in customer engagement and market saturation.
@@ -22,20 +22,69 @@ This analysis of an e-commerce public dataset reveals key insights into sales tr
 While a weak negative correlation exists between delivery time and customer satisfaction, it's not a primary driver of customer sentiment. RFM analysis identified valuable customer segments based on recency, frequency, and monetary value, providing opportunities for targeted marketing efforts.
 
 ## Insight Deep-Dive
+
 ### Sales, Orders, and Customers:
-The analysis reveals a significant growth trend in sales, orders, and customer acquisition from October 2016 to late 2017.
-A peak in sales during November 2017 suggests the effectiveness of marketing campaigns during that period.
-Fluctuations and a gradual decline in sales observed in 2018 indicate potential challenges such as customer engagement, market saturation, or reduced promotional activities.
+- The analysis reveals a significant growth trend in sales, orders, and customer acquisition from October 2016 to late 2017.
+- A peak in sales during November 2017 suggests the effectiveness of marketing campaigns during that period.
+- Fluctuations and a gradual decline in sales observed in 2018 indicate potential challenges such as customer engagement, market saturation, or reduced promotional activities.
+
 ### Average Sales per Customer:
-A sharp drop in average sales per customer in December 2016 might be attributed to seasonality, operational disruptions, or decreased demand.
-A rapid increase in January 2017 could be due to operational recovery or specific sales promotions.
-Fluctuations in the latter half of the analysis period (July 2017 - August 2018) suggest a need for strategies to maintain growth momentum.
+- A sharp drop in average sales per customer in December 2016 might be attributed to seasonality, operational disruptions, or decreased demand.
+- A rapid increase in January 2017 could be due to operational recovery or specific sales promotions.
+- Fluctuations in the latter half of the analysis period (July 2017 - August 2018) suggest a need for strategies to maintain growth momentum.
+
 ### Order Delivery Time and Customer Satisfaction:
-A weak negative correlation between order delivery time and customer satisfaction suggests that longer delivery times may slightly affect customer satisfaction, but the relationship is not strong.
+- A weak negative correlation between order delivery time and customer satisfaction suggests that longer delivery times may slightly affect customer satisfaction, but the relationship is not strong.
+
 ### RFM Analysis:
 - Recency: Customers who recently transacted are highly engaged and valuable for retention efforts. Personalized marketing strategies can be applied to maintain their loyalty.
 - Frequency: Customers with high transaction frequency are loyal and contribute significantly to business activity. Reward programs and exclusive offers can enhance their loyalty.
 - Monetary: Customers with high monetary value are crucial for revenue generation. Personalized experiences and premium services can cater to their needs.
+
+## Technical Implementation
+
+### Dashboard Components
+1. Sales Dashboard
+   - Monthly sales analysis
+   - Order volume tracking
+   - Customer acquisition metrics
+   - Average spending per customer
+
+2. RFM Analysis Dashboard
+   - Customer segmentation visualization
+   - Top customer identification
+   - Behavioral metrics analysis
+
+3. Product Analysis
+   - Category popularity rankings
+   - Price distribution analysis
+   - Sales performance metrics
+
+4. Correlation Analysis
+   - Delivery time vs. satisfaction
+   - Trend visualization
+
+### Dependencies
+```
+streamlit
+pandas
+matplotlib
+seaborn
+numpy
+```
+
+### Installation and Setup
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/E-Commerce-Analysis.git
+
+# Install required packages
+pip install -r requirements.txt
+
+# Run the Streamlit app
+streamlit run app.py
+```
+
 ## Recommendations
 Based on the insights derived from the analysis, the following recommendations are proposed:
 
@@ -46,7 +95,6 @@ Based on the insights derived from the analysis, the following recommendations a
 - Customer Engagement: Implement initiatives to improve customer engagement and address potential decline in sales.
 - Operational Efficiency: Continuously monitor and improve operational efficiency to ensure timely order fulfillment and enhance customer satisfaction.
 - Data-Driven Decision-Making: Leverage data insights for continuous improvement and strategic planning.
-By implementing these recommendations, the e-commerce business can enhance customer satisfaction, optimize operations, and drive sustainable growth.
 
 ## Link Dashboard Streamlit
 ```
